@@ -1,18 +1,36 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="hello">
+    <b-table :fields="fields" striped hover :items="posts">
+      <template #cell(id)="data">
+        <router-link :to="`/posts/${data.value}`">
+          {{ data.value }}
+        </router-link>
+      </template>
+    </b-table>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import { mapState } from 'vuex'
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
+  data () {
+    return {
+      fields: [
+        'userId',
+        'id',
+        'title',
+        'body'
+      ]
+    }
+  },
+  computed: {
+    ...mapState([
+      'posts'
+    ])
+  },
+  mounted () {
+    this.$store.dispatch('getPosts')
   }
 }
 </script>
